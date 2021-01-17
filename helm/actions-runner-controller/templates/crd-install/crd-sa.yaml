@@ -1,0 +1,13 @@
+{{- if .Values.crds.install -}}
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{ include "actions-runner-controller.crdInstallName" . }}
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    # create hook dependencies in the right order
+    "helm.sh/hook-weight": "-4"
+    {{- include "actions-runner-controller.crdInstallAnnotations" . | nindent 4 }}
+  labels:
+    role: {{ include "actions-runner-controller.crdInstallLabel" . | quote }}
+{{- end }}

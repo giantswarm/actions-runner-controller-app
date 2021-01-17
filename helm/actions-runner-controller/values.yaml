@@ -31,15 +31,15 @@ serviceAccount:
 podAnnotations: {}
 
 podSecurityContext: {}
-  # fsGroup: 2000
+  fsGroup: 2000
 
 securityContext: {}
-  # capabilities:
-  #   drop:
-  #   - ALL
-  # readOnlyRootFilesystem: true
-  # runAsNonRoot: true
-  # runAsUser: 1000
+  capabilities:
+    drop:
+    - ALL
+  readOnlyRootFilesystem: true
+  runAsNonRoot: true
+  runAsUser: 1000
 
 service:
   type: ClusterIP
@@ -87,3 +87,37 @@ affinity: {}
 # ref: https://kubernetes.io/docs/concepts/configuration/pod-priority-preemption/
 # PriorityClass: system-cluster-critical
 priorityClassName: ""
+
+# crds
+crds:
+
+  # crds.image
+  image:
+
+    # crds.image.registry
+    # image registry address.
+    registry: quay.io
+
+    # crds.image.repository
+    # image repository name.
+    repository: giantswarm/docker-kubectl
+
+    # crds.image.tag
+    # image tag to pull.
+    tag: latest
+
+  # crds.install
+  # defaults to true. if set to false, crds must be managed via another method.
+  # setting to true will also update the crds if they change.
+  install: true
+
+  # crds.securityContext
+  securityContext:
+
+    # crds.securityContext.runAsGroup
+    # group to run kubectl image as.
+    runAsGroup: 1000
+
+    # crds.securityContext.runAsUser
+    # user to run kubectl image as.
+    runAsUser: 1000

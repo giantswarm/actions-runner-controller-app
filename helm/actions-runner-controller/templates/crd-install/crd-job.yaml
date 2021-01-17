@@ -1,0 +1,60 @@
+{{- if .Values.crds.install }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "actions-runner-controller.crdInstallName" . }}
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    # create hook dependencies in the right order
+    "helm.sh/hook-weight": "-1"
+    {{- include "actions-runner-controller.crdInstallAnnotations" . | nindent 4 }}
+  labels:
+    role: {{ include "actions-runner-controller.crdInstallLabel" . | quote }}
+spec:
+  template:
+    metadata:
+      labels:
+        role: {{ include "actions-runner-controller.crdInstallLabel" . | quote }}
+    spec:
+      serviceAccountName: {{ include "actions-runner-controller.crdInstallName" . }}
+      securityContext:
+        runAsUser: {{ .Values.crds.securityContext.runAsUser }}
+        runAsGroup: {{ .Values.crds.securityContext.runAsGroup }}
+      tolerations:
+      - key: node-role.kubernetes.io/master
+        effect: NoSchedule
+      containers:
+      - name: kubectl
+        image: "{{ .Values.crds.image.registry }}/{{ .Values.crds.image.repository }}:{{ .Values.crds.image.tag }}"
+        command:
+        - sh
+        - -c
+        - |
+          set -o errexit ; set -o xtrace ; set -o nounset
+
+          # piping stderr to stdout means kubectl's errors are surfaced
+          # in the pod's logs.
+
+          kubectl apply -f /data/ 2>&1
+        volumeMounts:
+{{- range $path, $_ := .Files.Glob "files/**" }}
+        - name: {{ $path | base | replace "_" "-" | replace "." "-" | trimSuffix ".yaml" }}
+          mountPath: /data/{{ $path | base | replace "_" "-" }}
+          subPath: {{ $path | base | replace "_" "-" }}
+{{- end }}
+        resources: {{- toYaml .Values.crds.resources | nindent 10 }}
+      volumes:
+{{- $currentScope := . }}
+{{- range $path, $_ := .Files.Glob "files/**" }}
+    {{- with $currentScope }}
+      - name: {{ $path | base | replace "_" "-" | replace "." "-" | trimSuffix ".yaml" }}
+        configMap:
+          name: {{ include "actions-runner-controller.crdInstallName" . }}-{{ $path | base | replace "_" "-" | trimSuffix ".yaml" }}
+          items:
+          - key: content
+            path: {{ $path | base | replace "_" "-" }}
+{{- end }}
+{{- end }}
+      restartPolicy: Never
+  backoffLimit: 4
+{{- end }}

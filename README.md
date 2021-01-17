@@ -1,13 +1,21 @@
-[![CircleCI](https://circleci.com/gh/giantswarm/{APP-NAME}-app.svg?style=shield)](https://circleci.com/gh/giantswarm/{APP-NAME}-app)
+[![CircleCI](https://circleci.com/gh/giantswarm/actions-runner-controller.svg?style=shield)](https://circleci.com/gh/giantswarm/actions-runner-controller)
 
-# {APP-NAME} chart
+# actions-runner-controller chart
 
-Giant Swarm offers a {APP-NAME} App which can be installed in tenant clusters.
-Here we define the {APP-NAME} chart with its templates and default configuration.
+Giant Swarm offers an actions-runner-controller App which can be installed in tenant clusters.
+Here we define the actions-runner-controller chart with its templates and default configuration.
 
-**What is this app?**  
-**Why did we add it?**  
-**Who can use it?**  
+**What is this app?**
+
+This controller operates self-hosted runners for GitHub Actions on your Kubernetes cluster.
+
+**Why did we add it?**
+
+To facilitate running Github action jobs on Kubernetes.
+
+**Who can use it?**
+
+Anyone with a Github account.
 
 ## Installing
 
@@ -59,4 +67,4 @@ Not following these limitations will most likely result in a broken deployment.
 
 ## Credit
 
-* {APP HELM REPOSITORY}
+* [summerwinds/actions-runner-controller](https://github.com/summerwind/actions-runner-controller)

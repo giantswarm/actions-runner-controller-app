@@ -23,6 +23,6 @@ version: [[ .Version ]]
 appVersion: 0.11.2
 
 engine: gotpl
+home: https://github.com/giantswarm/actions-runner-controller-app
 sources:
 - https://github.com/summerwind/actions-runner-controller
-home: https://github.com/giantswarm/actions-runner-controller-app

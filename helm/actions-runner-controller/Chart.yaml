@@ -1,5 +1,5 @@
 apiVersion: v2
-name: actions-runner-controller-app
+name: actions-runner-controller
 description: A Kubernetes controller that operates self-hosted runners for GitHub Actions on your Kubernetes cluster.
 
 # A chart can be either an 'application' or a 'library' chart.

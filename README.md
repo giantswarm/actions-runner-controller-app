@@ -1,5 +1,9 @@
 [![CircleCI](https://circleci.com/gh/giantswarm/actions-runner-controller.svg?style=shield)](https://circleci.com/gh/giantswarm/actions-runner-controller)
 
+# This repo is currently UNMAINTAINED.
+
+**If you want to work on it, please fork.**
+
 # actions-runner-controller chart
 
 Giant Swarm offers an actions-runner-controller App which can be installed in tenant clusters.
